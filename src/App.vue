@@ -1,43 +1,51 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <button @click="selectedComponent = 'appQuote'">App Quote</button>
-        <button @click="selectedComponent = 'quoteAuthor'">App Author</button>
-        <button @click="selectedComponent = 'quoteList'">App List</button>
+    <progressbar :total="quotes.length" :max="maxQuote"></progressbar>
+    <new-quote @addQuote="addQuote($event)"></new-quote>
+    <quote-grid
+      :quotes="quotes"
+      @deleteQuote="quotes.splice($event, 1)"
+    ></quote-grid>
+    <div class="row" v-if="quotes.length > 1">
+      <div class="col-sm-12 text-center">
+        <div class="alert alert-info">Info: Click on a Quote to delete it.</div>
       </div>
-      <div class="col-xs-12">
-        <keep-alive>
-          <component :is="selectedComponent">
-            <h2 slot="title">{{ title }}</h2>
-            <p slot="content">A wonderful Quote</p>
-            <p>Some other content</p>
-            <p>Another paragraph</p>
-          </component>
-        </keep-alive>
+    </div>
+    <div class="row" v-if="error">
+      <div class="col-sm-12 text-center">
+        <div class="alert alert-danger">{{ error }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Quote from "./components/Quote.vue";
-import QuoteAuthor from "./components/QuoteAuthor.vue";
-import QuoteList from "./components/QuoteList.vue";
+import NewQuote from "./components/NewQuote.vue";
+import QuoteGrid from "./components/QuoteGrid.vue";
+import Progressbar from "./components/Progressbar.vue";
 
 export default {
-  data() {
+  data: function() {
     return {
-      title: "The Quote",
-      selectedComponent: "appQuote"
+      quotes: ["Just a dummy quote"],
+      maxQuote: 5,
+      error: ""
     };
   },
   components: {
-    appQuote: Quote,
-    quoteAuthor: QuoteAuthor,
-    quoteList: QuoteList
+    QuoteGrid,
+    NewQuote,
+    Progressbar
+  },
+  methods: {
+    addQuote: function(NewQuote) {
+      if (this.quotes.length >= this.maxQuote) {
+        this.error = `The max length of quotes is ${this.maxQuote}`;
+        return;
+      }
+      this.error = "";
+      this.quotes.push(NewQuote);
+    }
   }
 };
 </script>
-
-<style></style>

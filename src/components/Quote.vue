@@ -1,28 +1,25 @@
 <template>
   <div>
-    <slot name="title"></slot>
-    <slot name="subtitle">The subtitle</slot>
-    <h4>My own content</h4>
-    <slot name="content"></slot>
-    <hr />
-    <slot></slot>
+    <div class="col-sm-6 col-md-4 col-lg3">
+      <div class="panel panel-default">
+        <div class="panel-body quote">
+          <slot></slot>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
-export default {};
-</script>
-
-<style scoped>
-div {
-  border: 1px solid #ccc;
-  box-shadow: 1px 1px 2px black;
-  padding: 30px;
-  margin: 30px auto;
-  text-align: center;
+<style>
+.panel-body {
+  font-family: "Arizonia", cursive;
+  font-size: 25px;
+  color: #6e6e6e;
 }
-
-h2 {
-  background-color: aqua;
+.quote {
+  cursor: pointer;
+}
+.quote:hove {
+  background-color: #ffe2e2;
 }
 </style>

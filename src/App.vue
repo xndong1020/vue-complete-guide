@@ -2,27 +2,32 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-        <h1 v-highlight:background.upper="titleColor">Directives</h1>
+        <h1>Filters & Mixins</h1>
+        <p>{{ text | toUppperCase | to-lowercase }}</p>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <input type="text" v-model="filter">
+      <div v-for="(fruit, index) in filteredFruits" :key="index">
+        <div>{{ fruit }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { fruitMixin } from "./mixins/fruitMixin";
 export default {
+  mixins: [fruitMixin],
   data() {
     return {
-      titleColor: "green"
+      text: "Some text here"
     };
   },
-  directives: {
-    highlight: {
-      bind(el, binding) {
-        if (binding.modifiers["upper"]) el.style.textTransform = "uppercase";
-        if (binding.arg === "background")
-          el.style.backgroundColor = binding.value || "red";
-        else el.style.color = binding.value || "red";
-      }
+  filters: {
+    toUppperCase(value) {
+      return value.toUpperCase();
     }
   }
 };

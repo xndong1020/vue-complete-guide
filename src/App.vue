@@ -1,50 +1,28 @@
 <template>
   <div class="container">
-    <progressbar :total="quotes.length" :max="maxQuote"></progressbar>
-    <new-quote @addQuote="addQuote($event)"></new-quote>
-    <quote-grid
-      :quotes="quotes"
-      @deleteQuote="quotes.splice($event, 1)"
-    ></quote-grid>
-    <div class="row" v-if="quotes.length > 1">
-      <div class="col-sm-12 text-center">
-        <div class="alert alert-info">Info: Click on a Quote to delete it.</div>
-      </div>
-    </div>
-    <div class="row" v-if="error">
-      <div class="col-sm-12 text-center">
-        <div class="alert alert-danger">{{ error }}</div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <h1 v-highlight:background.upper="titleColor">Directives</h1>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import NewQuote from "./components/NewQuote.vue";
-import QuoteGrid from "./components/QuoteGrid.vue";
-import Progressbar from "./components/Progressbar.vue";
-
 export default {
-  data: function() {
+  data() {
     return {
-      quotes: ["Just a dummy quote"],
-      maxQuote: 5,
-      error: ""
+      titleColor: "green"
     };
   },
-  components: {
-    QuoteGrid,
-    NewQuote,
-    Progressbar
-  },
-  methods: {
-    addQuote: function(NewQuote) {
-      if (this.quotes.length >= this.maxQuote) {
-        this.error = `The max length of quotes is ${this.maxQuote}`;
-        return;
+  directives: {
+    highlight: {
+      bind(el, binding) {
+        if (binding.modifiers["upper"]) el.style.textTransform = "uppercase";
+        if (binding.arg === "background")
+          el.style.backgroundColor = binding.value || "red";
+        else el.style.color = binding.value || "red";
       }
-      this.error = "";
-      this.quotes.push(NewQuote);
     }
   }
 };
